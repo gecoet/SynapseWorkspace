@@ -1,0 +1,138 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+	"parameters": {
+		"SynapseWorkspaceName": {
+			"value": "gcsynwssanpreprodsqlpool"
+		},
+		"SQLPoolName": {
+			"value": "GCSQLPool"
+		},
+		"sparkPoolName": {
+			"value": "syndemogcspk1"
+		},
+		"sparkPoolNodeSize": {
+			"value": "Medium"
+		},
+		"sparkNodeSizeFamily": {
+            "value": "MemoryOptimized"
+        },
+		"sparkVersion": {
+            "value": "3.1"
+        },
+		"DataLakeStorageAccountName": {
+			"value": "sasandemosynapseadl01"
+		},
+		"DataLakeStorageFilesystemName": {
+			"value": "gc-demo-preprod-sqlpool-workspace"
+		},
+		"userAssignedIdentity": {
+			"value": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyUserserMSI"
+		},
+		"encryption": {
+            "value": {
+                "cmk": {
+                    "key": {
+                        "name": "default",
+                        "keyVaultUrl": "https://xxxxxxxxx.vault.azure.net/keys/xxxxxxxxxx"
+                    },
+                    "kekIdentity": {
+                        "useSystemAssignedIdentity": false,
+                        "userAssignedIdentity": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyUserserMSI"
+                    }
+                }
+            }
+        },
+		"sqlAdministratorLogin": {
+			"reference": {
+				"keyVault": {
+					"id": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.KeyVault/vaults/KVSANGCAppl"
+				},
+				"secretName": "SAN-GCDemo-SQLPool-Username"
+			}
+		},
+		"sqlAdministratorLoginPassword": {
+			"reference": {
+				"keyVault": {
+					"id": "subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.KeyVault/vaults/KVSANGCAppl"
+				},
+				"secretName": "SAN-GCDemo-SQLPool-Password"
+			}
+		},
+		"setWorkspaceIdentityRbacOnStorageAccount": {
+			"value": true
+		},
+		"allowAllConnections": {
+			"value": false
+		},
+		"managedVirtualNetwork": {
+			"value": "default"
+		},
+		"tags": {
+            "value": {
+                "Application Name": "Synapse SQLPool",
+			    "System Owner": "gerhard.coetzee@live.com",
+			    "Technical System Owner Name": "gerhard.coetzee@live.com"
+            }
+        },
+		"DiagnosticStorageAccountId": {
+            "value": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/SAN-DataServices-PreProd-DataProduct/providers/Microsoft.Storage/storageAccounts/sasanpreprdpbcreddiag01"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourcegroups/san-dataservices-preprod-monitor/providers/microsoft.operationalinsights/workspaces/law-ira-preprod-1"
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 30
+		},
+		"storageResourceGroupName": {
+			"value": "MyResourceGroup"
+		},
+		"storageLocation": {
+			"value": "SouthAfricaNorth"
+		},
+		"adlaResourceId": {
+			"value": ""
+		},
+		"userAssignedIdentityname": {
+			"value": "SAN-ZAR-MI-SQLPoolRawCIBDigital-PreProd"
+		},
+		// "roleAssignments": {
+        //      "value": [
+        //          {
+        //              "roleDefinitionIdOrName": "Reader",
+        //              "principalIds": [
+        //                  "1111111-1234-4532-2222-1234567"
+        //              ]
+        //          },
+        //          {
+        //             "roleDefinitionIdOrName": "User Access Administrator",
+        //             "principalIds": [
+        //                 "2222222-1234-4532-2222-1234567", "543212345-1234-4532-2222-1234567"
+        //             ]
+        //         }
+        //      ]
+        //  },
+		"privateEndpoints": {
+            "value": [
+                { 
+                    "name": "PEP-SAN-PreProd-synwssanpreprodsqlpool-SQL",
+                    "subnetResourceId": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.Network/virtualNetworks/VNET-ZA-GC-Demo/subnets/subn-GC-Demo-Synapse",
+					"service": "sql",
+                    "privateDnsZoneResourceIds": [
+                        "/subscriptions/dbabcaa6-b91a-4d21-bfcc-b1f0a5065d53/resourceGroups/san-plt-coredns/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+                    ],
+                    "customDnsConfigs": [] // Optional
+                },
+				{ 
+                    "name": "PEP-SAN-PreProd-synwssanpreprodsqlpool-DEV",
+                    "subnetResourceId": "/subscriptions/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.Network/virtualNetworks/VNET-ZA-GC-Demo/subnets/subn-GC-Demo-Synapse",
+					"service": "dev",
+                    "privateDnsZoneResourceIds": [
+                        "/subscriptions/11111111-1234-5678-4321-12345678/resourceGroups/MyDNSRG/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+                    ],
+                    "customDnsConfigs": [] // Optional
+                }
+            ]
+        }
+	}
+}
