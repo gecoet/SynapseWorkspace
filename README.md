@@ -1,5 +1,5 @@
 # SynapseWorkspace
-Synapse Workspace deployment with ARM templates
+- Synapse Workspace deployment with a dedicated SQL Pool and Spark Pool.
 
 ## DISCLAIMER
 
