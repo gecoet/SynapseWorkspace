@@ -798,7 +798,6 @@
           "isAzureMonitorTargetEnabled": true,
           "storageEndpoint": "[concat('https://', parameters('DiagnosticStorageName'), '.blob.core.windows.net/')]",
           "storageAccountSubscriptionId": "[parameters('storageSubscriptionID')]"
-          // "storageAccountAccessKey": "esmTWHUC+mFcUvp0SI1L0MMDjfEB+KIPjS/t6h2tk7si74v19HyeKBylQcPFjHz6vGewoChczYEyMHpZhp1/sA=="
       }
     },
     {
